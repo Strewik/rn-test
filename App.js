@@ -1,20 +1,61 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 
-export default function App() {
+const App = () => {
+  const [selectedPdf, setSelectedPdf] = useState(null);
+
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/pdf",
+      });
+      if (result.type === "success") {
+        setSelectedPdf(result);
+      } else {
+        console.log("Document picking canceled");
+      }
+    } catch (error) {
+      console.error("Error picking document:", error);
+      Alert.alert("Error", "Failed to pick PDF document. Please try again.");
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TouchableOpacity onPress={pickDocument} style={styles.button}>
+        <Text style={styles.buttonText}>Pick PDF Document</Text>
+      </TouchableOpacity>
+      {selectedPdf && (
+        <View style={styles.selectedPdfContainer}>
+          <Text style={styles.selectedPdfText}>{selectedPdf.name}</Text>
+        </View>
+      )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: "#37BEA7",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  selectedPdfContainer: {
+    marginTop: 20,
+  },
+  selectedPdfText: {
+    fontSize: 16,
   },
 });
+
+export default App;
