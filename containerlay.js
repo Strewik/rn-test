@@ -21,46 +21,7 @@ import Feather from "react-native-vector-icons/Feather";
 import { Ionicons } from "@expo/vector-icons";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const handleRegister = () => {
-    console.log("hello");
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-      profileImage: image,
-    };
-    console.log("User data: " + user.email);
-    axios
-      .post("http://127.0.0.1:3000/register", user)
-      .then((response) => {
-        console.log(response);
-        Alert.alert(
-          "Registration successful",
-          "You have been registered successfully"
-        );
-        setName("");
-        setEmail("");
-        setPassword("");
-        setImage("");
-      })
-      .catch((error) => {
-        Alert.alert(
-          "Registration failed",
-          "An error occurred while registering"
-        );
-        console.log("registration failed", error);
-      });
-  };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   return (
     <View>
@@ -71,101 +32,10 @@ const Register = () => {
         </View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
           <ScrollView>
-            <Text style={styles.text_footer}>Email</Text>
-            <View style={styles.action}>
-              <FontAwesome name="user-o" color="#05375a" size={20} />
-              <TextInput
-                placeholder="Your email"
-                style={styles.textInput}
-                autoCapitalize="none"
-                onChangeText={(text) => setEmail(text)}
-              />
-              {email.check_textInputChange ? (
-                <Animatable.View animation="bounceIn">
-                  <Feather name="check-circle" color="green" size={20} />
-                </Animatable.View>
-              ) : null}
-            </View>
-
-            <Text
-              style={[
-                styles.text_footer,
-                {
-                  marginTop: 35,
-                },
-              ]}
-            >
-              Password
-            </Text>
-            <View style={styles.action}>
-              <Feather name="lock" color="#05375a" size={20} />
-              <TextInput
-                placeholder="Your Password"
-                // secureTextEntry={data.secureTextEntry ? true : false}
-                secureTextEntry={!showPassword}
-                style={styles.textInput}
-                autoCapitalize="none"
-                onChangeText={(text) => setPassword(text)}
-              />
-              <TouchableOpacity
-                style={styles.toggleButton}
-                onPress={togglePasswordVisibility}
-              >
-                <Ionicons
-                  name={showPassword ? "eye-off" : "eye"}
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.text_footer}>Name</Text>
-            <View style={styles.action}>
-              <FontAwesome name="user-o" color="#05375a" size={20} />
-              <TextInput
-                placeholder="Your name"
-                style={styles.textInput}
-                autoCapitalize="none"
-                onChangeText={(text) => setName(text)}
-              />
-              {name.check_textInputChange ? (
-                <Animatable.View animation="bounceIn">
-                  <Feather name="check-circle" color="green" size={20} />
-                </Animatable.View>
-              ) : null}
-            </View>
-
-            <Text style={styles.text_footer}>Image url</Text>
-            <View style={styles.action}>
-              <FontAwesome name="user-o" color="#05375a" size={20} />
-              <TextInput
-                placeholder="Image url"
-                style={styles.textInput}
-                autoCapitalize="none"
-                onChangeText={(text) => setImage(text)}
-              />
-              {name.check_textInputChange ? (
-                <Animatable.View animation="bounceIn">
-                  <Feather name="check-circle" color="green" size={20} />
-                </Animatable.View>
-              ) : null}
-            </View>
-
-            <View style={styles.textPrivate}>
-              <Text style={styles.color_textPrivate}>
-                By signing up you agree to our
-              </Text>
-              <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-                {" "}
-                Terms of service
-              </Text>
-              <Text style={styles.color_textPrivate}> and</Text>
-              <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-                {" "}
-                Privacy policy
-              </Text>
-            </View>
+                 
+            
             <View style={styles.button}>
-              <TouchableOpacity style={styles.signIn} onPress={handleRegister}>
+              <TouchableOpacity style={styles.signIn} >
                 <LinearGradient
                   colors={["#08d4c4", "#01ab9d"]}
                   style={styles.signIn}
