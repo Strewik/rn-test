@@ -21,47 +21,6 @@ import Feather from "react-native-vector-icons/Feather";
 import { Ionicons } from "@expo/vector-icons";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [profileImage, setProfileImage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const handleRegister = () => {
-    console.log("hello");
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-      profileImage: profileImage,
-    };
-    console.log("User data: " + user.email);
-    axios
-      .post("http://10.0.2.2:3000/register", user)
-      .then((response) => {
-        console.log(response);
-        Alert.alert(
-          "Registration successful",
-          "You have been registered successfully"
-        );
-        setName("");
-        setEmail("");
-        setPassword("");
-        profileImage("");
-      })
-      .catch((error) => {
-        Alert.alert(
-          "Registration failed",
-          "An error occurred while registering"
-        );
-        console.log("registration failed", error);
-      });
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <View>
       <View style={styles.container}>
@@ -71,17 +30,8 @@ const Register = () => {
         </View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
           <ScrollView>
-            
-
-           
-             
-           
-
-            
-
-            
-            {/* <View style={styles.button}>
-              <TouchableOpacity style={styles.signIn} onPress={handleRegister}>
+            <View style={styles.button}>
+              <TouchableOpacity style={styles.signIn}>
                 <LinearGradient
                   colors={["#08d4c4", "#01ab9d"]}
                   style={styles.signIn}
@@ -121,7 +71,7 @@ const Register = () => {
                   Sign In
                 </Text>
               </TouchableOpacity>
-            </View> */}
+            </View>
           </ScrollView>
         </Animatable.View>
       </View>

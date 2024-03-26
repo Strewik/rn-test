@@ -11,6 +11,7 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  Image,
 } from "react-native";
 import { useRouter } from "expo-router";
 import axios from "axios";
@@ -19,303 +20,66 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Picker } from "@react-native-picker/picker";
 
 const Register = () => {
-  const [step, setStep] = useState(1);
-
-  const [location, setLocation] = useState("");
-  const [service, setService] = useState("");
-
-  const handleNextStep = () => {
-    if (step === 1) {
-      if (!location || !selectedDate || !selectedTime) {
-        Alert.alert("Error", "All fields are required");
-        return;
-      }
-    }
-    setStep(step + 1);
-  };
-
-  const handleSubmit = () => {
-    Alert.alert("Success", "Your request has been submitted");
-    // Handle form submission
-  };
-
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleDateConfirm = (date) => {
-    setSelectedDate(date.toLocaleDateString());
-    hideDatePicker();
-  };
-
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
-  };
-
-  const hideTimePicker = () => {
-    setTimePickerVisibility(false);
-  };
-
-  const handleTimeConfirm = (time) => {
-    setSelectedTime(time.toLocaleTimeString());
-    hideTimePicker();
-  };
-
-  const textInputChange = (val) => {
-    if (val.length !== 0) {
-      setLocation({
-        location: val,
-        check_textInputChange: true,
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const handleRegister = () => {
+    console.log("hello");
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+      profileImage: profileImage,
+    };
+    console.log("User data: " + user.email);
+    axios
+      .post("http://10.0.2.2:3000/register", user)
+      .then((response) => {
+        console.log(response);
+        Alert.alert(
+          "Registration successful",
+          "You have been registered successfully"
+        );
+        setName("");
+        setEmail("");
+        setPassword("");
+        profileImage("");
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Registration failed",
+          "An error occurred while registering"
+        );
+        console.log("registration failed", error);
       });
-    } else {
-      setLocation({
-        location: val,
-        check_textInputChange: false,
-      });
-    }
   };
 
-  const [selectedServiceProvider, setSelectedServiceProvider] = useState(null);
-
-  const handleServiceProviderChange = (value) => {
-    setSelectedServiceProvider(value);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
-
-  // Sample object array of service providers
-  const serviceProviders = [
-    {
-      fullName: "John Doe",
-      services: ["Captioning", "Local Sign", "Guide", "Tactile"],
-      location: "New York",
-    },
-    {
-      fullName: "Jane Smith",
-      services: ["Captioning", "Guide"],
-      location: "Los Angeles",
-    },
-    // Add more service providers as needed
-  ];
 
   return (
     <View>
       <View style={styles.container}>
-        {step === 1 && (
-          <View>
-            <StatusBar backgroundColor="#009387" barStyle="light-content" />
-            <View style={styles.header}>
-              <Text style={styles.text_header}>Register Now now!</Text>
-            </View>
-            <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-              <ScrollView>
-                <Text style={styles.text_footer}>Location</Text>
-                <View style={styles.action}>
-                  <FontAwesome name="user-o" color="#05375a" size={20} />
-                  <TextInput
-                    placeholder="Location"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
-                  />
-                  {location.check_textInputChange ? (
-                    <Animatable.View animation="bounceIn">
-                      <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                  ) : null}
-                </View>
-                <Text style={styles.text_footer}>Date: </Text>
-                <View style={styles.action}>
-                  <FontAwesome name="user-o" color="#05375a" size={20} />
-                  <View>
-                    <TouchableOpacity
-                      onPress={showDatePicker}
-                      style={styles.textInput}
-                    >
-                      <Text>{selectedDate || "Select Date"}</Text>
-                    </TouchableOpacity>
-                    <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="date"
-                      onConfirm={handleDateConfirm}
-                      onCancel={hideDatePicker}
-                    />
-                  </View>
-                  {location.check_textInputChange ? (
-                    <Animatable.View animation="bounceIn">
-                      <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                  ) : null}
-                </View>
-                <Text style={styles.text_footer}>Time: </Text>
-                <View style={styles.action}>
-                  <FontAwesome name="user-o" color="#05375a" size={20} />
-                  <View>
-                    <TouchableOpacity
-                      onPress={showTimePicker}
-                      style={styles.textInput}
-                    >
-                      <Text>{selectedTime || "Select Time"}</Text>
-                    </TouchableOpacity>
-                    <DateTimePickerModal
-                      isVisible={isTimePickerVisible}
-                      mode="time"
-                      onConfirm={handleTimeConfirm}
-                      onCancel={hideTimePicker}
-                    />
-                  </View>
-                  {location.check_textInputChange ? (
-                    <Animatable.View animation="bounceIn">
-                      <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                  ) : null}
-                </View>
-                <View style={styles.button}>
-                  <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={handleNextStep}
-                  >
-                    <LinearGradient
-                      colors={["#08d4c4", "#01ab9d"]}
-                      style={styles.signIn}
-                    >
-                      <Text
-                        style={[
-                          styles.textSign,
-                          {
-                            color: "#fff",
-                          },
-                        ]}
-                      >
-                        Next
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
+        <StatusBar backgroundColor="#009387" barStyle="light-content" />
 
-                  <TouchableOpacity
-                    onPress={() => router.push("/login")}
-                    style={[
-                      styles.signIn,
-                      {
-                        borderColor: "#009387",
-                        borderWidth: 1,
-                        marginTop: 15,
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.textSign,
-                        {
-                          color: "#009387",
-                        },
-                      ]}
-                    >
-                      Back
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </Animatable.View>
-          </View>
-        )}
-        {step === 2 && (
-          <View>
-            <StatusBar backgroundColor="#009387" barStyle="light-content" />
-            <View style={styles.header}>
-              <Text style={styles.text_header}>Register Now now!</Text>
-            </View>
-            <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-              <ScrollView>
-              <View>
-              <Text>Select a Service Provider:</Text>
-              <Picker
-                selectedValue={selectedServiceProvider}
-                onValueChange={handleServiceProviderChange}
-              >
-                <Picker.Item label="Select a Service Provider" value={null} />
-                {serviceProviders.map((provider, index) => (
-                  <Picker.Item
-                    key={index}
-                    label={`${provider.fullName} - ${provider.location}`}
-                    value={provider}
-                  />
-                ))}
-              </Picker>
-              {selectedServiceProvider && (
-                <View style={{ marginTop: 20 }}>
-                  <Text>Selected Service Provider:</Text>
-                  <Text>Name: {selectedServiceProvider.fullName}</Text>
-                  <Text>Location: {selectedServiceProvider.location}</Text>
-                  <Text>
-                    Services Offered:{" "}
-                    {selectedServiceProvider.services.join(", ")}
-                  </Text>
-                </View>
-              )}
-            </View>
-                
-                <View style={styles.button}>
-                  <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={handleNextStep}
-                  >
-                    <LinearGradient
-                      colors={["#08d4c4", "#01ab9d"]}
-                      style={styles.signIn}
-                    >
-                      <Text
-                        style={[
-                          styles.textSign,
-                          {
-                            color: "#fff",
-                          },
-                        ]}
-                      >
-                        Next
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={() => router.push("/login")}
-                    style={[
-                      styles.signIn,
-                      {
-                        borderColor: "#009387",
-                        borderWidth: 1,
-                        marginTop: 15,
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.textSign,
-                        {
-                          color: "#009387",
-                        },
-                      ]}
-                    >
-                      Back
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </Animatable.View>
-          </View>
-        )}
-
+        <View style={styles.header}>
+          <Text style={styles.text_header}>Register Now now!</Text>
+          <Image
+            style={styles.profilePicture}
+            source={require("./assets/prince.jpg")}
+          />
+        </View>
+        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+          <ScrollView>
+            
+          </ScrollView>
+        </Animatable.View>
       </View>
     </View>
   );
@@ -386,5 +150,13 @@ const styles = StyleSheet.create({
   },
   color_textPrivate: {
     color: "grey",
+  },
+  profilePicture: {
+    // marginTop: 4000,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 20,
+    marginTop: -70,
   },
 });
