@@ -1,246 +1,241 @@
-import React from "react";
 import {
-  View,
-  StyleSheet,
-  StatusBar,
   ScrollView,
+  StyleSheet,
   Text,
+  View,
   Image,
+  TouchableOpacity,
+  Platform,
+  Dimensions,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
+import React, { useState, useRef, useEffect } from "react";
+import Carousel, {
+  Pagination,
+  ParallaxImage,
+} from "react-native-snap-carousel";
 
-const App = () => {
-  let profile = {
-    profileUrl: "https://example.com/profile",
-    name: "Jane Doe",
-    phoneNum: "+1234567890",
-    address: "123 Main Street, City, Country",
-    dob: "1990-05-15",
-    gender: "Female",
-    disability: "Can't hear",
-    password: "mySecurePassword123",
-    account: "User-D0005U",
-  };
+import { views1, views2 } from "./data";
 
-  isServiceProvider = true;
-  return (
-    <View style={styles.container}>
-      {/* Background */}
-      <View style={styles.background}>
-        <StatusBar backgroundColor="#009387" barStyle="light-content" />
-        <View style={{ alignItems: "center", marginBottom: 60 }}>
-          <Image
-            style={styles.profilePicture}
-            source={require("./assets/prince.jpg")}
-          />
-          <Text>Name</Text>
-          <Text>{profile.name}</Text>
-          <Text>Account</Text>
-          <Text>{profile.account}</Text>
-        </View>
-        {/* Your content here */}
+const SLIDER_WIDTH = Dimensions.get("window").width;
 
-        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-          <View style={styles.content}>
-            <ScrollView>
-              <Text style={styles.text_header}>Personal data</Text>
-              <Text style={styles.text_label}>Email:</Text>
-              <Text style={styles.text_data}>jane@mail.com</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Phone number:</Text>
-              <Text style={styles.text_data}>0752 123456</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Address:</Text>
-              <Text style={styles.text_data}>Gayaza, Kasangati</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Date of birth:</Text>
-              <Text style={styles.text_data}>14/07/1994</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Gender:</Text>
-              <Text style={styles.text_data}>Female</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Nature of disability:</Text>
-              <Text style={styles.text_data}>Blindness</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.text_label}>Change password</Text>
-              <Text style={styles.text_data}>************</Text>
-              <View style={styles.divider}></View>
-              {isServiceProvider && (
-                <>
-                  <Text>KYC</Text>
-                  <Text style={styles.text_header}>Personal data</Text>
-                  <Text style={styles.text_label}>Email:</Text>
-                  <Text style={styles.text_data}>jane@mail.com</Text>
-                  <View style={styles.divider}></View>
-                  <Text style={styles.text_label}>Phone number:</Text>
-                  <Text style={styles.text_data}>0752 123456</Text>
-                  <View style={styles.divider}></View>
-                  <Text style={styles.text_label}>Address:</Text>
-                  <Text style={styles.text_data}>Gayaza, Kasangati</Text>
-                  <View style={styles.divider}></View>
-                  <Text style={styles.text_label}>Date of birth:</Text>
-                  <Text style={styles.text_data}>14/07/1994</Text>
-                  <View style={styles.divider}></View>
-                  <Text style={styles.text_label}>Gender:</Text>
-                  <Text style={styles.text_data}>Female</Text>
-                </>
-              )}
-              <View>
-                <Text>Sign Out</Text>
-              </View>
-            </ScrollView>
-          </View>
-        </Animatable.View>
-      </View>
-    </View>
-  );
-};
-export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  background: {
-    flex: 1,
-    backgroundColor: "#009387",
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-  content: {
-    // flex: 3,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 30,
-    paddingVertical: 30,
-    marginTop: -30,
-  },
-  divider: {
-    width: "90%",
-    height: 1,
-    backgroundColor: "black",
-    marginTop: 10,
-    opacity: 0.4,
-  },
-  profilePicture: {
-    // marginTop: 4000,
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 20,
-    marginTop: 20,
-    alignItems: "center",
-   
-  },
-  text_header: {
-    color: "#009387",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-});
-
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   StatusBar,
-//   Image,
-//   ScrollView,
-// } from "react-native";
-// import React from "react";
-// import * as Animatable from "react-native-animatable";
-
-// const App = () => {
+// const renderItem1 = ({ item }) => {
 //   return (
-//     <View>
-//       <View style={styles.container}>
-//         <StatusBar backgroundColor="#009387" barStyle="light-content" />
-//         <View style={styles.head}>
-//           <View style={(alignItems = "center")}>
-//             <Image
-//               style={styles.profilePicture}
-//               source={require("./assets/prince.jpg")}
-//             />
-//           </View>
-//           <Text>Name</Text>
-//           <Text>some cool name</Text>
-//           <Text>Account holder</Text>
-//           <Text>Star rating</Text>
-//         </View>
-//         <View style={styles.body}>
-//           <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-//             <ScrollView>
-//               <Text style={styles.text_header}>Personal data</Text>
-//               <Text style={styles.text_label}>Email:</Text>
-//               <Text style={styles.text_data}>john@mail.com</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Phone number:</Text>
-//               <Text style={styles.text_data}>0752 123456</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Address:</Text>
-//               <Text style={styles.text_data}>Gayaza, Kasangati</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Date of birth:</Text>
-//               <Text style={styles.text_data}>14/07/1994</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Gender:</Text>
-//               <Text style={styles.text_data}>Male</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Nature of disability:</Text>
-//               <Text style={styles.text_data}>Blindness</Text>
-//               <View style={styles.divider}></View>
-//               <Text style={styles.text_label}>Change password</Text>
-//               <Text style={styles.text_data}>************</Text>
-//               <View style={styles.divider}></View>
-//               <View>
-
-//                 <Text>Sign Out</Text>
-//               </View>
-//             </ScrollView>
-//           </Animatable.View>
-//         </View>
+//     <View style={styles.renderItem1_parentView1}>
+//       <Image source={{ uri: item.imgUrl }} style={styles.renderItem1_img} />
+//       <View style={styles.renderItem1_view1}>
+//         <Text style={styles.renderItem1_text1}>OFFERS</Text>
+//       </View>
+//       <View style={styles.renderItem1_view2}>
+//         <Text style={styles.renderItem1_text2}>{item.title}</Text>
+//         <TouchableOpacity>
+//           <Text style={styles.renderItem1_text3}>EXPLORE OFFERS</Text>
+//         </TouchableOpacity>
 //       </View>
 //     </View>
 //   );
 // };
 
-// export default App;
+// const renderItem2 = ({ item }) => {
+//   return (
+//     <View style={styles.renderItem2_parentView2}>
+//       <Image source={{ uri: item.imgUrl }} style={styles.renderItem2_img} />
+//       {item.verified ? (
+//         <View
+//           style={[styles.renderItem1_view1, { backgroundColor: "#D8FFDB" }]}
+//         >
+//           <Text style={[styles.renderItem1_text1, { color: "#008100" }]}>
+//             verified
+//           </Text>
+//         </View>
+//       ) : (
+//         <View
+//           style={[styles.renderItem1_view1, { backgroundColor: "#FFDADB" }]}
+//         >
+//           <Text style={[styles.renderItem1_text1, { color: "#7D0000" }]}>
+//             not verified
+//           </Text>
+//         </View>
+//       )}
+//     </View>
+//   );
+// };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: "#009387",
-//   },
-//   head: {
-//     backgroundColor: "green",
-//     paddingBottom: 40,
-//     alignContent: "center",
-//   },
-//   body: {
-//     backgroundColor: "gold",
-//     // backgroundColor: "#fff",
-//     borderTopLeftRadius: 30,
-//     borderTopRightRadius: 30,
-//     paddingHorizontal: 30,
-//     paddingVertical: 30,
-//     marginTop: -30,
-//   },
-//   profilePicture: {
-//     // marginTop: 4000,
-//     width: 150,
-//     height: 150,
-//     borderRadius: 75,
-//     marginBottom: 20,
-//     marginTop: 20,
-//     alignItems: "center",
-//     borderWidth: 2,
-//     borderColor: "fff",
-//   },
-//   divider: {
-//     width: "90%",
-//     height: 1,
-//     backgroundColor: "black",
-//     marginTop: 10,
-//     opacity: 0.4,
-//   },
-// });
+const renderItem3 = ({ item }) => {
+  return (
+    <View style={styles.renderItem1_parentView1}>
+      <Image
+        source={{ uri: item.imgUrl }}
+        style={[styles.renderItem1_img, { height: 250 }]}
+      />
+    </View>
+  );
+};
+
+const renderItem4 = ({ item }, parallaxProps) => {
+  return (
+    <View style={styles.item}>
+      <ParallaxImage
+        source={{ uri: item.imgUrl }}
+        containerStyle={styles.imageContainer}
+        style={styles.image}
+        parallaxFactor={0.4}
+        {...parallaxProps}
+      />
+    </View>
+  );
+};
+
+const App = () => {
+  const [page, setPage] = useState(0);
+  const isCarousel = useRef(null);
+
+  const [entries, setEntries] = useState([]);
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    setEntries(views2);
+  }, []);
+
+  return (
+    <ScrollView style={{ backgroundColor: "#f2f2f2" }}>
+      {/* Default Carousel */}
+      {/*<Carousel
+           layout={"default"}
+           data={views1}
+           renderItem={renderItem1}
+           sliderWidth={400}
+           itemWidth={350}
+        />*/}
+
+      {/* Tinder like Carousel */}
+      {/*<Carousel
+           layout={"tinder"}
+           data={views2}
+           renderItem={renderItem2}
+           sliderWidth={400}
+           itemWidth={350}
+        />*/}
+
+      {/* Pagination Carousel */}
+      <Carousel
+        ref={isCarousel}
+        onSnapToItem={(page) => setPage(page)}
+        data={views1}
+        renderItem={renderItem3}
+        sliderWidth={SLIDER_WIDTH}
+        itemWidth={SLIDER_WIDTH*0.7}
+        loop
+        autoplay
+        autoplayInterval={3000}
+      />
+      <Pagination
+        activeDotIndex={page}
+        carouselRef={isCarousel}
+        tappableDots={true}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+        dotsLength={views1.length}
+        dotStyle={{
+          width: 10,
+          borderRadius: 18,
+          backgroundColor: "#0074FF",
+          // marginTop:10,
+        }}
+        inactiveDotStyle={{
+          backgroundColor: "grey",
+        }}
+      />
+
+      {/* Parallax Carousel */}
+      {/* <Carousel
+        ref={carouselRef}
+        sliderWidth={500}
+        sliderHeight={200}
+        itemWidth={450}
+        data={entries}
+        renderItem={renderItem4}
+        hasParallaxImages={true}
+      /> */}
+    </ScrollView>
+  );
+};
+
+export default App;
+
+const styles = StyleSheet.create({
+  renderItem1_parentView1: {
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    // height: 250,
+    // width: 350,
+    justifyContent: "space-around",
+    alignItems: "center",
+    overflow: "hidden",
+    marginVertical: 40,
+  },
+  renderItem1_view1: {
+    width: 80,
+    position: "absolute",
+    fontSize: 20,
+    top: 10,
+    right: 20,
+    backgroundColor: "#ffffff",
+    borderRadius: 18,
+    alignItems: "center",
+  },
+  renderItem1_view2: {
+    width: 350,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  renderItem1_img: {
+    width: "100%",
+    height: "100%",
+  },
+  renderItem1_text1: {
+    fontWeight: "700",
+    color: "#000000",
+  },
+  renderItem1_text2: {
+    marginVertical: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  renderItem1_text3: {
+    marginVertical: 12,
+    color: "blue",
+    fontWeight: "bold",
+  },
+  renderItem2_parentView2: {
+    backgroundColor: "#ffffff",
+    borderRadius: 18,
+    height: 550,
+    width: 350,
+    justifyContent: "space-around",
+    alignItems: "center",
+    overflow: "hidden",
+    marginVertical: 20,
+  },
+  renderItem2_img: {
+    width: 350,
+    height: 550,
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "cover",
+  },
+  imageContainer: {
+    flex: 1,
+    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
+    backgroundColor: "white",
+    borderRadius: 8,
+  },
+  container: {
+    flex: 1,
+  },
+  item: {
+    width: 350,
+    height: 200,
+    marginVertical: 20,
+  },
+});
