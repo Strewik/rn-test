@@ -1,241 +1,76 @@
+import React from "react";
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
   View,
+  Text,
   Image,
+  StyleSheet,
   TouchableOpacity,
-  Platform,
-  Dimensions,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
-import Carousel, {
-  Pagination,
-  ParallaxImage,
-} from "react-native-snap-carousel";
 
-import { views1, views2 } from "./data";
-
-const SLIDER_WIDTH = Dimensions.get("window").width;
-
-// const renderItem1 = ({ item }) => {
-//   return (
-//     <View style={styles.renderItem1_parentView1}>
-//       <Image source={{ uri: item.imgUrl }} style={styles.renderItem1_img} />
-//       <View style={styles.renderItem1_view1}>
-//         <Text style={styles.renderItem1_text1}>OFFERS</Text>
-//       </View>
-//       <View style={styles.renderItem1_view2}>
-//         <Text style={styles.renderItem1_text2}>{item.title}</Text>
-//         <TouchableOpacity>
-//           <Text style={styles.renderItem1_text3}>EXPLORE OFFERS</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const renderItem2 = ({ item }) => {
-//   return (
-//     <View style={styles.renderItem2_parentView2}>
-//       <Image source={{ uri: item.imgUrl }} style={styles.renderItem2_img} />
-//       {item.verified ? (
-//         <View
-//           style={[styles.renderItem1_view1, { backgroundColor: "#D8FFDB" }]}
-//         >
-//           <Text style={[styles.renderItem1_text1, { color: "#008100" }]}>
-//             verified
-//           </Text>
-//         </View>
-//       ) : (
-//         <View
-//           style={[styles.renderItem1_view1, { backgroundColor: "#FFDADB" }]}
-//         >
-//           <Text style={[styles.renderItem1_text1, { color: "#7D0000" }]}>
-//             not verified
-//           </Text>
-//         </View>
-//       )}
-//     </View>
-//   );
-// };
-
-const renderItem3 = ({ item }) => {
+const BlogCard = () => {
   return (
-    <View style={styles.renderItem1_parentView1}>
-      <Image
-        source={{ uri: item.imgUrl }}
-        style={[styles.renderItem1_img, { height: 250 }]}
-      />
-    </View>
+    <TouchableOpacity style={styles.card} onPress={() => {}}>
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: "https://via.placeholder.com/150" }} // replace with your image URL
+          style={styles.image}
+        />
+        <View style={styles.overlay}>
+          <Text style={styles.overlayText}>Read our blog</Text>
+        </View>
+      </View>
+      <View style={styles.body}>
+        <Text style={styles.bodyText}>This is the body of the card.</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
-const renderItem4 = ({ item }, parallaxProps) => {
-  return (
-    <View style={styles.item}>
-      <ParallaxImage
-        source={{ uri: item.imgUrl }}
-        containerStyle={styles.imageContainer}
-        style={styles.image}
-        parallaxFactor={0.4}
-        {...parallaxProps}
-      />
-    </View>
-  );
-};
-
-const App = () => {
-  const [page, setPage] = useState(0);
-  const isCarousel = useRef(null);
-
-  const [entries, setEntries] = useState([]);
-  const carouselRef = useRef(null);
-
-  useEffect(() => {
-    setEntries(views2);
-  }, []);
-
-  return (
-    <ScrollView style={{ backgroundColor: "#f2f2f2" }}>
-      {/* Default Carousel */}
-      {/*<Carousel
-           layout={"default"}
-           data={views1}
-           renderItem={renderItem1}
-           sliderWidth={400}
-           itemWidth={350}
-        />*/}
-
-      {/* Tinder like Carousel */}
-      {/*<Carousel
-           layout={"tinder"}
-           data={views2}
-           renderItem={renderItem2}
-           sliderWidth={400}
-           itemWidth={350}
-        />*/}
-
-      {/* Pagination Carousel */}
-      <Carousel
-        ref={isCarousel}
-        onSnapToItem={(page) => setPage(page)}
-        data={views1}
-        renderItem={renderItem3}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={SLIDER_WIDTH*0.7}
-        loop
-        autoplay
-        autoplayInterval={3000}
-      />
-      <Pagination
-        activeDotIndex={page}
-        carouselRef={isCarousel}
-        tappableDots={true}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-        dotsLength={views1.length}
-        dotStyle={{
-          width: 10,
-          borderRadius: 18,
-          backgroundColor: "#0074FF",
-          // marginTop:10,
-        }}
-        inactiveDotStyle={{
-          backgroundColor: "grey",
-        }}
-      />
-
-      {/* Parallax Carousel */}
-      {/* <Carousel
-        ref={carouselRef}
-        sliderWidth={500}
-        sliderHeight={200}
-        itemWidth={450}
-        data={entries}
-        renderItem={renderItem4}
-        hasParallaxImages={true}
-      /> */}
-    </ScrollView>
-  );
-};
-
-export default App;
+export default BlogCard;
 
 const styles = StyleSheet.create({
-  renderItem1_parentView1: {
-    backgroundColor: "#ffffff",
+  card: {
+    marginHorizontal: 18,
+    marginVertical: 38,
     borderRadius: 10,
-    // height: 250,
-    // width: 350,
-    justifyContent: "space-around",
-    alignItems: "center",
     overflow: "hidden",
-    marginVertical: 40,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    backgroundColor: "#fff",
+    height: 250
   },
-  renderItem1_view1: {
-    width: 80,
-    position: "absolute",
-    fontSize: 20,
-    top: 10,
-    right: 20,
-    backgroundColor: "#ffffff",
-    borderRadius: 18,
-    alignItems: "center",
+  imageContainer: {
+    position: "relative",
+    height: "80%",
   },
-  renderItem1_view2: {
-    width: 350,
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  renderItem1_img: {
+  image: {
     width: "100%",
     height: "100%",
   },
-  renderItem1_text1: {
-    fontWeight: "700",
-    color: "#000000",
-  },
-  renderItem1_text2: {
-    marginVertical: 10,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  renderItem1_text3: {
-    marginVertical: 12,
-    color: "blue",
-    fontWeight: "bold",
-  },
-  renderItem2_parentView2: {
-    backgroundColor: "#ffffff",
-    borderRadius: 18,
-    height: 550,
-    width: 350,
-    justifyContent: "space-around",
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
-    marginVertical: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  renderItem2_img: {
-    width: 350,
-    height: 550,
+  overlayText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: "cover",
-  },
-  imageContainer: {
-    flex: 1,
-    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
+  body: {
     backgroundColor: "white",
-    borderRadius: 8,
+    padding: 10,
   },
-  container: {
-    flex: 1,
-  },
-  item: {
-    width: 350,
-    height: 200,
-    marginVertical: 20,
+  bodyText: {
+    fontSize: 16,
+    color: "#333",
   },
 });

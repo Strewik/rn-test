@@ -17,20 +17,23 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": [
+          "fetch"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
-        "permissions": ["READ_EXTERNAL_STORAGE"]
-      }
+        "permissions": [
+          "READ_EXTERNAL_STORAGE"
+        ]
+      },
+      "package": "com.anonymous.test"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
-   
-   
   }
 }
