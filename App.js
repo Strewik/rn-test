@@ -1,76 +1,42 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { useState } from 'react';
+import { Button, Image, View, StyleSheet } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-const BlogCard = () => {
+export default function ImagePickerExample() {
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.card} onPress={() => {}}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: "https://via.placeholder.com/150" }} // replace with your image URL
-          style={styles.image}
-        />
-        <View style={styles.overlay}>
-          <Text style={styles.overlayText}>Read our blog</Text>
-        </View>
-      </View>
-      <View style={styles.body}>
-        <Text style={styles.bodyText}>This is the body of the card.</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={styles.image} />}
+    </View>
   );
-};
-
-export default BlogCard;
+}
 
 const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 18,
-    marginVertical: 38,
-    borderRadius: 10,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-    backgroundColor: "#fff",
-    height: 250
-  },
-  imageContainer: {
-    position: "relative",
-    height: "80%",
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-    width: "100%",
-    height: "100%",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  overlayText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  body: {
-    backgroundColor: "white",
-    padding: 10,
-  },
-  bodyText: {
-    fontSize: 16,
-    color: "#333",
+    width: 200,
+    height: 200,
   },
 });
